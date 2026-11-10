@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Exploit + fix tests (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npx hardhat compile
+      - name: Every exploit must succeed vs Vulnerable and fail vs Secure
+        run: npm run test:verbose
+
+  app-smoke:
+    name: Run the app and solve every challenge through its API
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Start chain + server (local runner only)
+        run: |
+          npm run dev > dev.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://127.0.0.1:3000/api/challenges > /dev/null && break; sleep 2; done
+          curl -sf http://127.0.0.1:3000/api/challenges > /dev/null || (cat dev.log; exit 1)
+      - name: Write-ups are locked before solving
+        run: test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3000/api/challenges/01-reentrancy/writeup)" = "403"
+      - run: npm run smoke

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Damn Vulnerable dApp — local lab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="warning" role="alert">
+    ⚠ INTENTIONALLY VULNERABLE — RUN LOCALLY ONLY, NEVER DEPLOY. Test chain, test keys, no real funds.
+  </div>
+  <header>
+    <div class="brand">
+      <span class="logo">◈</span>
+      <div><h1>Damn Vulnerable dApp</h1><p>Attack first. Understand second.</p></div>
+    </div>
+    <div class="wallet" id="wallet">
+      <span class="dot"></span><span id="wallet-label">connecting…</span>
+    </div>
+  </header>
+  <main>
+    <aside>
+      <div class="progress"><span id="progress-text">0 / 0 solved</span><div class="bar"><div id="progress-bar"></div></div></div>
+      <nav id="scoreboard"></nav>
+      <div class="aside-actions">
+        <button class="ghost" id="reset-all">Redeploy all challenges</button>
+        <button class="ghost danger" id="reset-progress">Clear my progress</button>
+      </div>
+      <p class="console-tip">Tip: open DevTools and type <code>dvd</code> — you get <code>ethers</code>, a signer for your account and helpers.</p>
+    </aside>
+    <section id="challenge"></section>
+  </main>
+  <script src="/vendor/ethers.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="render.js"></script>
+  <script src="md.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

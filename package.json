@@ -1,0 +1,30 @@
+{
+  "name": "damn-vulnerable-dapp",
+  "version": "1.0.0",
+  "description": "An intentionally vulnerable Web3 dApp for learning Web3 application security testing. LOCAL ONLY.",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "start": "node server/index.js",
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:verbose": "SHOW_BLOCKED=1 hardhat test",
+    "smoke": "node scripts/smoke.js"
+  },
+  "author": "Robinson Israel Uche",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.6.1",
+    "hardhat": "^2.29.1",
+    "solc": "0.8.24"
+  },
+  "dependencies": {
+    "ethers": "^6.17.0",
+    "express": "^4.22.3"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
