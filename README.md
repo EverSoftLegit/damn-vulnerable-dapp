@@ -15,6 +15,48 @@ them. It is in the spirit of OWASP Juice Shop, Damn Vulnerable DeFi and Ethernau
 "how a tester finds it", the fix and the root-cause write-up stay **locked** until the server sees
 you have actually solved that challenge on your local chain.
 
+## Who this is for
+
+This lab is for people who have **been studying how to secure Web3 platforms** (developers, smart-contract
+auditors, pentesters and AppSec engineers moving into Web3) and now want hands-on practice *finding* the
+vulnerabilities they have read about, across the whole application and not just the contracts. It assumes
+you can read basic Solidity, know how Ethereum transactions and signatures work, and are comfortable with
+browser DevTools. If that's not you yet, work through the reading list below first.
+
+**New to the lab? Read [GUIDE.md](GUIDE.md).** It explains the testing method, the tools available in the
+app, a fully worked first challenge, and where to start on each of the others, without spoiling them.
+
+## Before you start: recommended reading
+
+You don't need all of these, but each challenge maps to at least one of them.
+
+**Foundations**
+- [Solidity docs: Security Considerations](https://docs.soliditylang.org/en/latest/security-considerations.html): the official overview of common pitfalls (reentrancy, `tx.origin`, gas, etc.).
+- [ethers v6 documentation](https://docs.ethers.org/v6/): the library you'll use in the browser console.
+- [Smart Contract Security Best Practices (Consensys Diligence)](https://consensysdiligence.github.io/smart-contract-best-practices/): a classic guide to known attacks and defensive patterns. It is no longer actively maintained but still a solid primer.
+
+**Vulnerability catalogues (the mappings used in this lab)**
+- [OWASP Smart Contract Top 10 (2025)](https://scs.owasp.org/sctop10/archive/2025/Top10:2025/): the list the "SCxx:2025" tags refer to. The current edition is at [scs.owasp.org/sctop10](https://scs.owasp.org/sctop10/).
+- [SWC Registry](https://swcregistry.io/): the classic weakness IDs (SWC-107 reentrancy, SWC-115 tx.origin, …). It is no longer actively updated but still widely referenced.
+- [OWASP Top 10 (2021)](https://owasp.org/Top10/2021/) and [OWASP API Security Top 10](https://owasp.org/API-Security/): for the web/backend challenges (10–12).
+
+**Signatures, tokens and auth (challenges 06, 07, 10)**
+- [EIP-712: typed structured data signing](https://eips.ethereum.org/EIPS/eip-712): domains, chainId, verifyingContract.
+- [EIP-2612: permit](https://eips.ethereum.org/EIPS/eip-2612): signed approvals with nonce and deadline.
+- [EIP-4361: Sign-In with Ethereum](https://eips.ethereum.org/EIPS/eip-4361): how wallet login messages should be built and verified.
+
+**Economic and DeFi bugs (challenges 04, 05, 08, 09)**
+- [OpenZeppelin: ERC-4626 and the inflation attack](https://docs.openzeppelin.com/contracts/5.x/erc4626): the first-depositor problem and the virtual-shares defence.
+- [ethereum.org: Maximal Extractable Value (MEV)](https://ethereum.org/en/developers/docs/mev/): mempools, transaction ordering and front-running.
+- [Chainlink VRF docs](https://docs.chain.link/vrf): what verifiable on-chain randomness looks like.
+
+**Web-layer (challenges 11, 12)**
+- [PortSwigger Web Security Academy: Cross-site scripting](https://portswigger.net/web-security/cross-site-scripting): free labs and explanations.
+
+**Tools and practice**
+- [Slither](https://github.com/crytic/slither): a static analyser that flags several of the contract-layer bugs here.
+- [Ethernaut](https://ethernaut.openzeppelin.com/) and [Damn Vulnerable DeFi](https://www.damnvulnerabledefi.xyz/): excellent contract-focused wargames to pair with this app-focused one.
+
 ## Challenges
 
 | # | Challenge | Layer | Difficulty | Mapping |
@@ -62,6 +104,8 @@ and checks that each write-up unlocks. **It contains every solution**, so play f
 
 ## How to play
 
+The full walkthrough, including a worked example and per-challenge starting points, is in **[GUIDE.md](GUIDE.md)**. In short:
+
 1. Pick a challenge on the scoreboard and read the goal. The **On-chain** card lists the deployed addresses and live balances.
 2. Attack it any way you like:
    - **In the UI.** Some challenges have flows to probe: the approval prompt (07), the mempool viewer and transaction composer (09), the login (10), the "gasless" reward claim (11) and the token watchlist (12). Bot buttons simulate other users: Alice falling for a phishing link (03), Alice depositing (04), the voucher issuer (06) and the solver bot (09).
@@ -107,6 +151,7 @@ docs/                     one write-up per challenge (what the UI unlocks)
 scripts/dev.js            one-command local run
 scripts/smoke.js          end-to-end check of the running app (spoilers)
 .github/workflows/ci.yml  tests on Node 20 and 22, then starts the app and runs the smoke test
+GUIDE.md                  how to approach the challenges (method, tools, worked example, no spoilers beyond 02)
 ```
 
 The same `setup()` and `isSolved()` code is used by the tests and by the running app, so what the tests
